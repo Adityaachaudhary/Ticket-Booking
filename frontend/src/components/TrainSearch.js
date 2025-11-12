@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { searchTrains, bookSeat } from '../services/trainApi';
+import { searchTrains, bookSeat } from '../services/realApi';
 import SeatSelection from './SeatSelection';
 import StationSuggestions from './StationSuggestions';
 

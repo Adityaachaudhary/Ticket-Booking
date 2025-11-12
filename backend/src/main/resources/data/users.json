@@ -1,7 +1,6 @@
 [ {
   "username" : "demo",
-  "user_id" : "demo-user-id",
-  "password" : "demo123",
-  "hashed_password" : "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
-  "tickets_booked" : [ ]
+  "userId" : "demo-user-id",
+  "password" : "<demo_password>",
+  "ticketsBooked" : [ ]
 } ]

@@ -21,7 +21,7 @@ public class TicketBookingApp {
             userBookingService = new UserBookingService();
         }
         catch (IOException ex){
-            System.err.println("Failed to initialize the booking system: " + ex.getMessage());
+            System.err.println("Failed to initialize the booking system");
             System.out.println("Please check if the data files are accessible and try again.");
             return;
         }
@@ -63,7 +63,7 @@ public class TicketBookingApp {
                             break;
                         }
                     }catch (IOException ex){
-                        System.err.println("Failed to sign up user: " + ex.getMessage());
+                        System.err.println("Failed to sign up user");
                     }
                     break;
                 case 2:
@@ -94,7 +94,7 @@ public class TicketBookingApp {
                     try{
                         userBookingService.fetchBookings();
                     }catch (Exception ex){
-                        System.err.println("Error fetching bookings: " + ex.getMessage());
+                        System.err.println("Error fetching bookings");
                     }
                     break;
                 case 4:
@@ -107,7 +107,7 @@ public class TicketBookingApp {
                     try {
                         trains = userBookingService.getTrains(source, destination);
                     } catch (IOException ex) {
-                        System.err.println("Error searching trains: " + ex.getMessage());
+                        System.err.println("Error searching trains");
                         break;
                     }
 

@@ -73,4 +73,8 @@ public class User {
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
     }
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

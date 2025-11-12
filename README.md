@@ -58,10 +58,10 @@ TicketBookingSystem/
 │   │   ├── SeatSelection.js  # Seat booking
 │   │   └── BookingManagement.js # Booking management
 │   ├── src/services/         # API Services
-│   │   └── mockApi.js        # Mock backend API
+│   │   └── realApi.js        # Backend API integration
 │   ├── src/utils/            # Helper functions
 │   └── package.json          # Frontend dependencies
-├── start-backend.bat         # Quick start backend
+├── start-server.bat          # Quick start backend HTTP server
 └── start-frontend.bat        # Quick start frontend
 ```
 
@@ -93,9 +93,10 @@ cd TicketBookingSystem
 ./gradlew :backend:build
 ```
 
-#### **Step 3:** Run the CLI Application
+#### **Step 3:** Run the HTTP Server
 ```sh
 ./gradlew :backend:run
+# OR use start-server.bat
 ```
 
 ### **Frontend (React Web App)**
@@ -118,6 +119,8 @@ npm start
 
 #### **Step 4:** Open in Browser
 Visit `http://localhost:3000`
+
+**Note:** Backend server must be running on port 8080 for full functionality.
 
 **Demo Credentials:**
 - Username: `demo`
@@ -149,7 +152,7 @@ Visit `http://localhost:3000`
 ✔️ **Tabbed Navigation** – Easy switching between features  
 ✔️ **Form Validation** – Username and input validation  
 ✔️ **Responsive Design** – Works on desktop, tablet, and mobile  
-✔️ **Mock Data Integration** – Simulates backend functionality  
+✔️ **Backend Integration** – Connected to Java HTTP server with real API endpoints  
 
 ### **UI Components:**
 - **Login/Signup** – Tabbed authentication interface
@@ -179,103 +182,41 @@ Visit `http://localhost:3000`
 ## 🔗 **Frontend-Backend Integration Guide**
 
 ### **Current Architecture:**
-- **Frontend (React)** - Port: `http://localhost:3000`, Uses mock API
-- **Backend (Java)** - Currently CLI-based, Uses local JSON files
+- **Frontend (React)** - Port: `http://localhost:3000`, Connected to backend API
+- **Backend (Java)** - HTTP Server on port `http://localhost:8080`, Uses local JSON files
 
-### **Integration Steps:**
+### **✅ Integration Complete:**
 
-#### **Step 1: Create REST API Endpoints**
-Add these REST controllers to your Java backend:
+The frontend and backend are now fully connected with the following implementation:
 
-```java
-// UserController.java
-@RestController
-@RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:3000")
-public class UserController {
-    @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody User user) {
-        // Your existing signup logic
-    }
-    
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        // Your existing login logic
-    }
-    
-    @GetMapping("/{userId}/bookings")
-    public ResponseEntity<?> getBookings(@PathVariable String userId) {
-        // Your existing fetch bookings logic
-    }
-    
-    @DeleteMapping("/bookings/{ticketId}")
-    public ResponseEntity<?> cancelBooking(@PathVariable String ticketId) {
-        // Your existing cancel booking logic
-    }
-}
+#### **Backend HTTP Server:**
+- **SimpleHttpServer.java** - Handles all API endpoints
+- **CORS enabled** - Allows frontend connections
+- **JSON data processing** - Uses Jackson for serialization
+- **Error handling** - Proper HTTP status codes
 
-// TrainController.java
-@RestController
-@RequestMapping("/api/trains")
-@CrossOrigin(origins = "http://localhost:3000")
-public class TrainController {
-    @GetMapping("/search")
-    public ResponseEntity<?> searchTrains(@RequestParam String source, 
-                                        @RequestParam String destination) {
-        // Your existing train search logic
-    }
-    
-    @PostMapping("/{trainId}/book")
-    public ResponseEntity<?> bookSeat(@PathVariable String trainId,
-                                    @RequestBody BookingRequest request) {
-        // Your existing seat booking logic
-    }
-}
-```
-
-#### **Step 2: Add Dependencies**
-Add these to your `build.gradle`:
-
-```gradle
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    // Your existing dependencies
-}
-```
-
-#### **Step 3: Update Frontend API Service**
-Replace the mock API in `frontend/src/services/mockApi.js` with real API calls:
-
-```javascript
-const API_BASE_URL = 'http://localhost:8080/api';
-
-export const login = async (username, password) => {
-  const response = await fetch(`${API_BASE_URL}/users/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
-  });
-  return response.json();
-};
-```
+#### **Frontend API Service:**
+- **realApi.js** - Connects to backend endpoints
+- **Fetch API** - Modern HTTP client
+- **Error handling** - Graceful fallbacks
+- **Real-time updates** - Live seat availability
 
 ### **API Endpoints:**
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/users/signup` | Register new user |
-| POST | `/api/users/login` | User authentication |
-| GET | `/api/users/{userId}/bookings` | Get user bookings |
-| DELETE | `/api/users/bookings/{ticketId}` | Cancel booking |
+| POST | `/api/login` | User authentication |
+| POST | `/api/signup` | Register new user |
 | GET | `/api/trains/search` | Search trains |
-| POST | `/api/trains/{trainId}/book` | Book seat |
+| POST | `/api/book` | Book seat |
+| GET | `/api/bookings` | Get user bookings |
+| POST | `/api/cancel` | Cancel booking |
 
 ## 🎯 **Demo Data**
 
 The system includes sample data:
 - **Users:** demo/demo123
-- **Trains:** Delhi-Mumbai, Delhi-Jaipur, Mumbai-Goa routes
-- **Seats:** Pre-configured seat availability (10x5 grid per train)
+- **Trains:** Delhi-Mumbai (Rajdhani Express), Delhi-Jaipur (Shatabdi Express), Delhi-Chennai (Tamil Nadu Express)
+- **Seats:** Pre-configured seat availability (8x6 grid per train)
 
 ## 🏗️ **Architecture Benefits**
 
@@ -326,7 +267,7 @@ The system includes sample data:
 
 ## 🚀 **Future Enhancements**
 
-🎯 **REST API Integration** – Connect React frontend to Java backend  
+✅ **REST API Integration** – React frontend connected to Java backend  
 💾 **Database Integration** – Store user and train data persistently  
 🔧 **Admin Panel** – Manage train schedules and user bookings  
 🔐 **JWT Authentication** – Secure user sessions  

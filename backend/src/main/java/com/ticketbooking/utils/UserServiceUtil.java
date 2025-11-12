@@ -14,4 +14,8 @@ public class UserServiceUtil {
     public static String generateTicketId() {
         return "" + System.currentTimeMillis();
     }
+    
+    public static String generateUserId() {
+        return "USER_" + System.currentTimeMillis();
+    }
 }

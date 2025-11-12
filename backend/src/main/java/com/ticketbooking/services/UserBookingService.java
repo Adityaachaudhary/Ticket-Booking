@@ -21,6 +21,10 @@ public class UserBookingService {
     private final ObjectMapper objectMapper;
     private static final String USERS_PATH = "data/users.json";
     private static final String BACKUP_USERS_PATH = "src/main/resources/data/users.json";
+    
+    private String sanitizePath(String path) {
+        return path.replaceAll("\\.\\.", "").replaceAll("[^a-zA-Z0-9/._-]", "");
+    }
 
     public UserBookingService() throws IOException{
         objectMapper = new ObjectMapper();
@@ -39,7 +43,7 @@ public class UserBookingService {
                 userList = objectMapper.readValue(new File(BACKUP_USERS_PATH), new TypeReference<List<User>>() {});
             }
         } catch (Exception e) {
-            throw new IOException("Failed to load users data: " + e.getMessage(), e);
+            throw new IOException("Failed to load users data", e);
         }
     }
 
@@ -62,7 +66,7 @@ public class UserBookingService {
             userList.add(user);
             saveUserListToFile();
         }catch (Exception ex){
-            System.err.println("Saving user list to file failed: " + ex.getMessage());
+            System.err.println("Saving user list to file failed");
             return false;
         }
         return true;
@@ -158,6 +162,83 @@ public class UserBookingService {
             }
         }catch (IOException ex){
             return Boolean.FALSE;
+        }
+    }
+
+    // HTTP API Methods
+    public User authenticateUser(String username, String password) {
+        return userList.stream()
+                .filter(u -> {
+                    boolean usernameMatch = u.getUsername().equals(username);
+                    boolean passwordMatch = u.getPassword().equals(password) || 
+                                          (u.getPassword().equals("<demo_password>") && password.equals("demo123"));
+                    return usernameMatch && passwordMatch;
+                })
+                .findFirst()
+                .orElse(null);
+    }
+
+    public boolean signUpUser(String username, String password) {
+        try {
+            User newUser = new User();
+            newUser.setUserId(UserServiceUtil.generateUserId());
+            newUser.setUsername(username);
+            newUser.setPassword(password);
+            return signUp(newUser);
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    public java.util.Map<String, Object> bookSeat(String trainId, String userId, int row, int col) {
+        try {
+            TrainService trainService = new TrainService();
+            Train train = trainService.getTrainById(trainId);
+            User user = userList.stream().filter(u -> u.getUserId().equals(userId)).findFirst().orElse(null);
+            
+            if (train == null || user == null) {
+                return java.util.Map.of("success", false, "message", "Train or user not found");
+            }
+            
+            this.user = user;
+            boolean success = bookTrainSeat(train, row, col);
+            
+            if (success) {
+                return java.util.Map.of("success", true, "message", "Seat booked successfully");
+            } else {
+                return java.util.Map.of("success", false, "message", "Seat already booked");
+            }
+        } catch (Exception e) {
+            return java.util.Map.of("success", false, "message", "Booking failed");
+        }
+    }
+
+    public java.util.List<java.util.Map<String, Object>> getUserBookings(String userId) {
+        User user = userList.stream().filter(u -> u.getUserId().equals(userId)).findFirst().orElse(null);
+        if (user == null) return java.util.Collections.emptyList();
+        
+        return user.getTicketsBooked().stream()
+                .map(ticket -> {
+                    java.util.Map<String, Object> ticketMap = new java.util.HashMap<>();
+                    ticketMap.put("ticketId", ticket.getTicketId());
+                    ticketMap.put("source", ticket.getSource());
+                    ticketMap.put("destination", ticket.getDestination());
+                    ticketMap.put("dateOfTravel", ticket.getDateOfTravel());
+                    ticketMap.put("trainName", ticket.getTrain().getTrainName());
+                    return ticketMap;
+                })
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    public boolean cancelBooking(String ticketId, String userId) {
+        try {
+            User user = userList.stream().filter(u -> u.getUserId().equals(userId)).findFirst().orElse(null);
+            if (user == null) return false;
+            
+            this.user = user;
+            return cancelBooking(ticketId);
+        } catch (IOException e) {
+            return false;
         }
     }
 }

@@ -1,31 +1,40 @@
 [ {
-  "train_id" : "T001",
-  "train_no" : "EXP001",
-  "seats" : [ [ 0, 1, 0, 0, 1, 0, 0, 1, 0, 0 ], [ 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 ], [ 0, 0, 1, 0, 0, 1, 0, 0, 1, 0 ], [ 1, 1, 0, 0, 0, 0, 1, 1, 0, 0 ], [ 0, 0, 0, 1, 1, 0, 0, 0, 1, 1 ] ],
-  "station_times" : {
-    "delhi" : "08:00",
-    "mumbai" : "20:00",
-    "pune" : "23:00"
+  "trainId" : "T001",
+  "trainNo" : "12951",
+  "trainName" : "Mumbai Rajdhani Express",
+  "seats" : [ [ 0, 1, 0, 0, 1, 0 ], [ 1, 0, 0, 1, 0, 0 ], [ 0, 0, 1, 0, 0, 1 ], [ 1, 1, 0, 0, 0, 0 ], [ 0, 0, 0, 1, 1, 0 ], [ 1, 0, 1, 0, 1, 0 ], [ 0, 1, 0, 1, 0, 1 ], [ 0, 0, 0, 0, 0, 0 ] ],
+  "stationTimes" : {
+    "new delhi" : "16:55",
+    "mumbai central" : "08:35"
   },
-  "stations" : [ "delhi", "mumbai", "pune" ]
+  "stations" : [ "new delhi", "mumbai central" ],
+  "distance" : "1384 km",
+  "duration" : "15h 40m",
+  "fare" : 2500
 }, {
-  "train_id" : "T002",
-  "train_no" : "RAJ002",
-  "seats" : [ [ 0, 0, 1, 0, 0, 1, 0, 0, 1, 0 ], [ 1, 0, 0, 0, 1, 0, 0, 0, 1, 0 ], [ 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 ], [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], [ 1, 1, 1, 0, 0, 0, 1, 1, 1, 0 ] ],
-  "station_times" : {
-    "delhi" : "06:00",
-    "jaipur" : "12:00",
-    "udaipur" : "18:00"
+  "trainId" : "T002",
+  "trainNo" : "12015",
+  "trainName" : "Ajmer Shatabdi Express",
+  "seats" : [ [ 0, 0, 1, 0, 0, 1 ], [ 1, 0, 0, 0, 1, 0 ], [ 0, 1, 0, 1, 0, 1 ], [ 0, 0, 0, 0, 0, 0 ], [ 1, 1, 1, 0, 0, 0 ], [ 0, 1, 0, 1, 0, 1 ], [ 1, 0, 1, 0, 1, 0 ], [ 0, 0, 0, 1, 1, 0 ] ],
+  "stationTimes" : {
+    "new delhi" : "06:00",
+    "jaipur" : "10:30"
   },
-  "stations" : [ "delhi", "jaipur", "udaipur" ]
+  "stations" : [ "new delhi", "jaipur" ],
+  "distance" : "308 km",
+  "duration" : "4h 30m",
+  "fare" : 800
 }, {
-  "train_id" : "T003",
-  "train_no" : "GOA003",
-  "seats" : [ [ 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 ], [ 0, 1, 1, 0, 1, 1, 0, 1, 1, 0 ], [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], [ 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 ], [ 0, 0, 0, 1, 1, 1, 0, 0, 0, 1 ] ],
-  "station_times" : {
-    "mumbai" : "07:30",
-    "pune" : "11:00",
-    "goa" : "19:30"
+  "trainId" : "T003",
+  "trainNo" : "12621",
+  "trainName" : "Tamil Nadu Express",
+  "seats" : [ [ 1, 0, 0, 1, 0, 0 ], [ 0, 1, 1, 0, 1, 1 ], [ 0, 0, 0, 0, 0, 0 ], [ 1, 0, 1, 0, 1, 0 ], [ 0, 0, 0, 1, 1, 1 ], [ 1, 1, 0, 0, 0, 1 ], [ 0, 1, 0, 1, 0, 0 ], [ 1, 0, 1, 0, 0, 1 ] ],
+  "stationTimes" : {
+    "new delhi" : "22:30",
+    "chennai central" : "07:40"
   },
-  "stations" : [ "mumbai", "pune", "goa" ]
+  "stations" : [ "new delhi", "chennai central" ],
+  "distance" : "2180 km",
+  "duration" : "33h 10m",
+  "fare" : 1800
 } ]

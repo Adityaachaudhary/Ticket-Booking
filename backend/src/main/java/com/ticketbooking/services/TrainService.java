@@ -17,6 +17,10 @@ public class TrainService {
     private final ObjectMapper objectMapper;
     private static final String TRAIN_DB_PATH = "data/trains.json";
     private static final String BACKUP_TRAIN_DB_PATH = "src/main/resources/data/trains.json";
+    
+    private String sanitizePath(String path) {
+        return path.replaceAll("\\.\\.", "").replaceAll("[^a-zA-Z0-9/._-]", "");
+    }
 
     public TrainService() throws IOException{
         objectMapper = new ObjectMapper();
@@ -35,7 +39,7 @@ public class TrainService {
                 trainList = objectMapper.readValue(new File(BACKUP_TRAIN_DB_PATH), new TypeReference<List<Train>>() {});
             }
         } catch (Exception e) {
-            throw new IOException("Failed to load trains data: " + e.getMessage(), e);
+            throw new IOException("Failed to load trains data", e);
         }
     }
 
@@ -49,7 +53,7 @@ public class TrainService {
                     .filter(train -> validTrain(train, source.toLowerCase().trim(), destination.toLowerCase().trim()))
                     .collect(Collectors.toList());
         }catch (Exception ex){
-            System.err.println("Error in searchTrains: " + ex.getMessage());
+            System.err.println("Error in searchTrains");
             return Collections.emptyList();
         }
     }
@@ -120,5 +124,12 @@ public class TrainService {
             System.out.println("Error in bookTickets: " + e.getMessage());
             return false;
         }
+    }
+
+    public Train getTrainById(String trainId) {
+        return trainList.stream()
+                .filter(train -> train.getTrainId().equals(trainId))
+                .findFirst()
+                .orElse(null);
     }
 }
